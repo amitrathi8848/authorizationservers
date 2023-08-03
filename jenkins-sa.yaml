@@ -1,0 +1,48 @@
+## CREATE a jenkins service account with role binding in each deployable namespace
+#---
+#kind: Role
+#apiVersion: rbac.authorization.k8s.io/v1
+#metadata:
+#  name: jenkins
+#  namespace: tpm-dev
+#rules:
+#  - apiGroups: [""]
+#    resources: ["pods"]
+#    verbs: ["create","delete","get","list","patch","update","watch"]
+#  - apiGroups: [""]
+#    resources: ["pods/exec"]
+#    verbs: ["create","delete","get","list","patch","update","watch"]
+#  - apiGroups: [""]
+#    resources: ["pods/log"]
+#    verbs: ["get","list","watch"]
+#  - apiGroups: ["apps", "extensions"]
+#    resources: ["deployments"]
+#    verbs: ["get", "apply", "list", "watch", "create", "update", "patch", "delete"]
+#  - apiGroups: [""]
+#    resources: ["services"]
+#    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+#  - apiGroups: [""]
+#    resources: ["secrets"]
+#    verbs: ["get", "create", "update"]
+#  - apiGroups: [""]
+#    resources: ["namespaces"]
+#    verbs: ["create","delete","get","list","patch","update","watch"]
+#---
+#apiVersion: v1
+#kind: ServiceAccount
+#metadata:
+#  name: jenkins
+#  namespace: tpm-dev
+#---
+#apiVersion: rbac.authorization.k8s.io/v1
+#kind: RoleBinding
+#metadata:
+#  name: jenkins-role-binding
+#  namespace: tpm-dev
+#roleRef:
+#  apiGroup: rbac.authorization.k8s.io
+#  kind: Role
+#  name: jenkins
+#subjects:
+#  - kind: ServiceAccount
+#    name: jenkins
